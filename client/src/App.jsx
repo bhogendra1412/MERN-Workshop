@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter,Routes,Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Register from './components/Register'
+import Login from './components/Login'
 
 export default function App() {
   return (
@@ -9,6 +10,7 @@ export default function App() {
       <Navbar/>
         <Routes>
           <Route path="/" element={<h1>Home</h1>}/>
+          <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
         </Routes>
     </BrowserRouter>

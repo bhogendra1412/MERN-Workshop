@@ -8,14 +8,24 @@ export default function Register() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [mobile, setMobile] = useState("")
+    
     function handleRegister(e) {
-        e.preventDeafault()
-        API.post("",{name,email,password,mobile})
+        e.preventDefault()
+        API.post("/auth/register",{name,email,password,mobile:Number(mobile)})
             .then((res)=>{
                 console.log(res)
+                if(res.status===201){
+                    alert("Registration Successful")
+                }
+                else if(res.status===201){
+                    alert(res.data.message)
+                }
             })
             .catch(err=>{
                 console.log(err)
+                if(err.status==401){
+                    alert(err.response.data.message)
+                }
             })
     }
     return (
@@ -29,7 +39,7 @@ export default function Register() {
                         <label htmlFor="" class="form-label">Name</label>
                         <input 
                             type="text" 
-                            class="form-control" 
+                            className="form-control" 
                             name="name"
                             onChange={(e)=>setName(e.target.value)}/>
                     </div>

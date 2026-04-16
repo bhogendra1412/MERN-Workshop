@@ -28,4 +28,32 @@ router.post("/register",async (req,res)=>{
 
 })
 
+router.post("/login", async(req,res)=>{
+    try{
+        const {email,password}=req.body
+        let user=await User.findOne({email})
+
+        if(!user){
+            return res.status(401).json({message: "User email not found"})
+        }
+        let isMatch=await bcrypt.compare(password,user.password)
+
+        if(!isMatch){
+            return res.status(401).json({message: "Invalid password"})
+        }
+
+        const token=jwt.sign(
+            {id:user._id},
+            process.env.JWT_SECRET,
+            {expiresIn: "1d"}
+        )
+
+        return res.status(200).json({message:"Login successful",user,token})
+    }
+    catch(e){
+        console.log("from login route",e)
+        return res.status(500).json({message: `from login route server error ${e}`})
+    }
+})
+
 module.exports=router
